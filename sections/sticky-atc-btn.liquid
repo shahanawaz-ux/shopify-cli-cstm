@@ -1,0 +1,116 @@
+{% comment %} <div class="sticky-section" style='display:none;'>
+    <div class="sticky-content">
+        <button class="sticky-atc-button">
+            <span class="sticky-text">Add To Cart</span>
+            <span class="sticky-loader" style='display:none;'></span>
+        </button>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const stickySection = document.querySelector(".sticky-section");
+        const stickyAtcButton = document.querySelector(".sticky-atc-button");
+        const stickyText = document.querySelector(".sticky-text");
+        const stickyLoader = document.querySelector(".sticky-loader");
+        const originalAtc = document.querySelector(".product-form__submit");
+
+        function checkvisibility(){
+            if(!originalAtc) return;
+
+            const edge = originalAtc.getBoundingClientRect();
+
+            if(edge.bottom < 0){
+                stickySection.style.display = 'block';
+            }
+            else{
+                 stickySection.style.display = 'none';
+            }
+        }
+        window.addEventListener("scroll",checkvisibility);
+        checkvisibility();
+        if(stickyAtcButton){
+            stickyAtcButton.addEventListener("click", function(){
+                if(originalAtc){
+                    stickyText.style.display = "none";
+                    stickyLoader.style.display = "inline-block";
+                    stickyAtcButton.disabled = true;
+
+                    originalAtc.click();
+
+                    setTimeout(() => {
+                        stickyText.style.display = "block";
+                    stickyLoader.style.display = "none";
+                    stickyAtcButton.disabled = false;
+
+                    },1000)
+                }
+                else{
+                    console.log("original add to cart button not found")
+                }
+            })
+        }
+        else{
+            console.log("sticky add to cart button not found");
+        }
+    })
+</script>
+<style>
+    .sticky-section{
+        width:100%;
+        position:fixed;
+        left:0;
+        bottom:0;
+        z-index:100;
+    }
+    .sticky-content{
+        width:100%;
+        min-height:70px;
+        background: #f3f3f3;
+         box-shadow:0 0 3px 3px #eeeee2;
+        padding:10px 20px;
+    }
+    .sticky-atc-button{
+        display:block;
+        width:100%;
+        max-width:450px;
+        min-height:48px;
+        background: #fedd59;
+        color: #1e1e1e;
+        border:none;
+        border-radius:8px;
+       
+        margin:0 auto;
+        text-align:center;
+    }
+    .sticky-text{
+        font-size:18px;
+        font-weight:600;
+        line-height:1.5;
+        text-align:center;
+    }
+    .sticky-loader{
+        display:inline-block;
+        width:18px;
+        height:18px;
+        border:3px solid black;
+        border-top:3px solid transparent;
+        border-radius:50%;
+        margin:0 auto;
+        animation: loader-animation 1s linear infinite;
+    }
+    @keyframes loader-animation{
+        0% {transform:rotate(0deg);}
+        100% {transform:rotate(360deg);}
+    }
+</style>
+{% schema %}
+{
+    "name": "sticky-atc",
+    "settings": [],
+    "presets": [
+        {
+            "name": "Sticky Add To Cart",
+        }
+    ]
+}
+{% endschema %} {% endcomment %}

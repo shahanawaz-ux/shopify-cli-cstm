@@ -1,0 +1,78 @@
+
+<div class="page-width">
+  <div class="collection-main-conatiner">
+        {% for collection in section.settings.collection_pick %}    
+            <div class="sub-container-collection1">
+                <a href="{{ collection.url }}">
+                    <div class="image-style"><img src="{{ collection.featured_image | image_url: width:'600'}}"width="100%" height="">
+                    </div>
+                    <p>{{ collection.title }} <span class="custom-arrow"> &rarr; </span> </p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% schema %}
+    {
+        "name": "custom_collection_list",
+        "settings": [
+            {
+                "type": "collection_list",
+                "id": "collection_pick",
+                "label": "Choose Collections"
+            }
+        ],
+        "presets": [
+            {
+                "name": "Custom -collection-list"
+            }
+        ]
+    }
+{% endschema %}
+<style>
+    .collection-main-conatiner{
+        display:flex;
+        flex-wrap:wrap;
+        margin:20px 0;
+        gap:1%;
+    }
+    .sub-container-collection1{
+        flex:0 0 24%;
+        padding:10px;
+        border:1px solid #e5dddd;
+        box-shadow:0px 0px 6px 0px #e5dddd;
+        border-radius:10px;
+
+    }
+    .sub-container-collection1 a{
+        text-decoration:none;
+        color:black;  
+        font-size:20px;  
+    }
+    .image-style{
+        aspect-ratio:2/2;
+    }
+    .image-style img{
+        aspect-ratio:2/2;
+        object-fit:contain;
+        transition:0.3s;
+    }
+    .sub-container-collection1:hover img{
+        transform:scale(1.05);
+    }
+    .sub-container-collection1:hover p{
+        text-decoration-line:underline;
+    }
+    .custom-arrow{
+        display:inline-block;
+    }
+    .sub-container-collection1:hover .custom-arrow{
+        {% comment %} font-size:33px; {% endcomment %}
+    }
+    @media(max-width:768px)
+    {
+     .sub-container-collection1{
+        flex:0 0 49%;
+    }
+    }
+</style>

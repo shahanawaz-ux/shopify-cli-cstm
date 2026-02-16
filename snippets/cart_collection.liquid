@@ -1,0 +1,53 @@
+
+
+
+
+{%- unless settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- if settings.quick_add == 'standard' -%}
+    <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+{%- if settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+ <div class="collection_products collection{% if settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}">
+  {%- for product in settings.collection_new_id.products -%}
+    <div class="collection_img_text">
+               {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: settings.image_ratio,
+                  image_shape: settings.image_shape,
+                  show_secondary_image: settings.show_secondary_image,
+                  show_vendor: settings.show_vendor,
+                  show_rating: settings.show_rating,
+                  skip_styles: skip_card_product_styles,
+                  section_id: section.id,
+                  quick_add: settings.quick_add
+                %}
+                </div>
+            {%- endfor -%}
+            </div>
+
+            <style>
+.collection_products {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+}
+.collection_img_text {
+    flex: 0 0 auto; 
+    width: 200px;
+}
+.collection_img_text .card__content {
+    display:unset;
+}
+</style>

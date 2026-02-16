@@ -1,0 +1,83 @@
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% if product.metafields.custom.releated_product.value != blank %}
+  <div class="releated_product page-width">
+    <h2>{{ section.settings.releated_heading }}</h2>
+    <div class="releated_data">
+      {% for product in product.metafields.custom.releated_product.value limit:4 %}
+        <div class="container_data">
+          {% render 'card-product',
+            card_product: product,
+            quick_add: section.settings.quick_add
+          %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+    {% schema %}
+    {
+    "name": "Releated Products",
+    "settings": [
+        {
+            "type": "text",
+            "id": "releated_heading",
+            "label": "Enter Heading"
+        },
+        {
+            "type": "select",
+            "id": "quick_add",
+            "default": "none",
+            "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+            "options": [
+                {
+                "value": "none",
+                "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1"
+                },
+                {
+                "value": "standard",
+                "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
+                },
+                {
+                "value": "bulk",
+                "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
+                }
+            ]
+        },
+    ],
+    "presets": [
+        {
+        "name": "Custom Releated Products"
+        }
+    ]
+    }
+    {%endschema %}
+
+    <style>
+    .releated_data {
+       display: flex;
+       gap: 1%;
+    }
+    .container_data {
+      width: 24%;
+    }
+    .releated_product h2{
+        font-weight:600;
+        font-size:30px;
+    }
+    </style>

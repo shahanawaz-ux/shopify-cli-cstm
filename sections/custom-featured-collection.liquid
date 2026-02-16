@@ -1,0 +1,105 @@
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+    <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+{%- if section.settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+<div class="page-width">
+    <div class="collection_container {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}">
+        {% for product in section.settings.collection_id.products limit: section.settings.limit_collection %}
+            <div class="inner_data">
+                {% render 'card-product',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    skip_styles: skip_card_product_styles,
+                    section_id: section.id,
+                    quick_add: section.settings.quick_add,
+                    custom_sale_badge:true
+                    %}
+                </div>
+            {% endfor %}
+    </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Featured collection New",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection_id",
+        "label": "Choose Collection"
+      },
+      {
+        "type": "select",
+        "id": "quick_add",
+        "default": "none",
+        "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+        "options": [
+            {
+            "value": "none",
+            "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1"
+            },
+            {
+            "value": "standard",
+            "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
+            },
+            {
+            "value": "bulk",
+            "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
+            }
+        ]
+      },
+    {
+        "type": "number",
+        "id": "limit_collection",
+        "label": "Show number of product",
+        "default":4
+    }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection New"
+      }
+    ]
+  }
+{% endschema %}
+<style>
+    .collection_container
+    {
+    display:flex;
+    gap:2.1%;
+    overflow:auto;
+    margin:20px 0;
+    }
+    .inner_data
+    {
+    flex:0 0 23%;
+    }
+    @media (width <= 600px ){
+        .inner_data
+        {
+            flex:0 0 48%;
+        }
+    }
+     @media (width <= 375px ){
+        .inner_data
+        {
+            flex:0 0 98%;
+        }
+    }
+    </style>

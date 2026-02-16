@@ -1,0 +1,43 @@
+{% comment %} 
+
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+
+
+<div class="also_like">
+  {% for product in settings.also_like.products %}
+    <div class="collection_like_data">
+      {% render 'card-product',
+        card_product: product,
+        media_aspect_ratio: section.settings.image_ratio,
+        image_shape: section.settings.image_shape,
+        lazy_load: lazy_load,
+        show_secondary_image: section.settings.show_secondary_image,
+        show_vendor: section.settings.show_vendor,
+        show_rating: section.settings.show_rating,
+        skip_styles: skip_card_product_styles,
+        section_id: section.id,
+        quick_add: 'standard'
+      %}
+    </div>
+  {% endfor %}
+</div>
+
+<style>
+  .also_like {
+    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+    scrollbar-width:none;
+    gap:1%;
+    margin:10px 0px;
+}
+.collection_like_data {
+    flex: 0 0 49%;
+    border: 1px solid #d3c0c0;
+    padding: 2px 5px 0 5px;
+    border-radius: 7px;
+}
+</style> {% endcomment %}

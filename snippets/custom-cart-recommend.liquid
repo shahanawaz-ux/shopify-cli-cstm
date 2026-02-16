@@ -1,0 +1,85 @@
+{%- unless section.settings.quick_add == 'none' -%}
+  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{%- endunless -%}
+
+{%- if section.settings.quick_add == 'standard' -%}
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{%- if section.settings.quick_add == 'bulk' -%}
+  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+<div class="custom-recommended">
+  {% for product in settings.recommended_product.products %}
+      <div class="data-custom-recommended"
+           data-product-id="{{ product.id }}">
+        {% render 'card-product',
+          card_product: product,
+          media_aspect_ratio: section.settings.image_ratio,
+          image_shape: section.settings.image_shape,
+          lazy_load: lazy_load,
+          show_secondary_image: section.settings.show_secondary_image,
+          show_vendor: section.settings.show_vendor,
+          show_rating: section.settings.show_rating,
+          skip_styles: skip_card_product_styles,
+          section_id: section.id,
+          quick_add: settings.quick_add
+        %}
+      </div>
+  {% endfor %}
+</div>
+
+<style>
+  .custom-recommended {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 10px 0;
+    gap: 1%;
+  }
+
+  .data-custom-recommended {
+    flex: 0 0 49%;
+    padding: 2px 5px;
+  }
+
+  .data-custom-recommended.sold-out {
+    opacity: 0.6;
+  }
+</style>
+<script>
+(function () {
+  function cleanRecommendedList() {
+    const recommendedBox = document.querySelector('.custom-recommended');
+    if (!recommendedBox) return;
+    fetch('/cart.js')
+      .then(response => response.json())
+      .then(cart => {
+        cart.items.forEach(item => {
+          const product = recommendedBox.querySelector(
+            '[data-product-id="' + item.product_id + '"]'
+          );
+          if (product) {
+            product.remove();
+          }
+        });
+      });
+  }
+  document.addEventListener('DOMContentLoaded', cleanRecommendedList);
+  setTimeout(function () {
+    const cartDrawer = document.querySelector('cart-drawer');
+    if (!cartDrawer) return;
+    new MutationObserver(function () {
+      cleanRecommendedList();
+    }).observe(cartDrawer, {
+      childList: true,
+      subtree: true
+    });
+  }, 1000);
+})();
+</script>

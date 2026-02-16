@@ -1,0 +1,21 @@
+ {% comment %} <div class="custom_selector">
+            {% if card_product.options_with_values.size > 0 %}
+              {% for option in card_product.options_with_values %}
+                {% if option.name == 'Color' %}
+                  <div class="variant-swatches">
+                    {% for value in option.values %}
+                      <button class="swatch">
+                        {{ value }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+
+          </div>
+          <style>
+            .custom_selector{
+              display:flex;
+            }
+            </style> {% endcomment %}

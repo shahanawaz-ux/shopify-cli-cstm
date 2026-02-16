@@ -1,0 +1,62 @@
+<div class="page-width">
+    <div class="metaobject-style-conatiner">
+        {% assign object = section.settings.meta_id %}
+        <div class="image-style1"><img src="{{ object.image | image_url: width:'600'}}" width="100%" height=""></div>
+        <h2>{{ object.name }}</h2>
+        <p>{{ object.description | newline_to_br }} </p>
+        <div class="product-style">
+            {% assign product =  object.choose_product.value %}
+           
+            <div class="product-image-style"><img src="{{ product.featured_image | image_url: width:'600' }}" width="100%" height=""></div>
+             <h3>{{ product.title }}</h3>
+             <p>{{ product.description }}</p>
+        </div>
+
+        
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Metafield",
+    "settings": [
+        {
+            "type": "metaobject",
+            "id": "meta_id",
+            "label": "Choose Metaobject",
+            "metaobject_type": "new_update"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Custom Meta Object"
+        }
+    ]
+}
+{% endschema %}
+<style>
+    .metaobject-style-conatiner{
+        margin:20px 0;
+        padding:10px;
+        border:1px solid #cec1c1;
+        box-shadow:0px 0px 6px 0px #cec1c1;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    .image-style1{
+        max-width:300px;
+        opacity:0.8;
+        transition:0.5s;
+    }
+    .image-style1:hover{
+        transform:scale(1.08);
+        opacity:1;
+    }
+    .metaobject-style-conatiner p{
+        text-align:center;
+    }
+    .product-image-style{
+        max-width:300px;
+    }
+</style>

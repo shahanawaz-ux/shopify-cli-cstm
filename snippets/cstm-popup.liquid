@@ -1,0 +1,79 @@
+<div id="global-popup" class="global-popup" hidden>
+  <div class="global-popup__overlay" data-close></div>
+
+  <div class="global-popup__content" role="dialog" aria-modal="true">
+    <button class="global-popup__close" data-close>&times;</button>
+
+    <div id="popup-dynamic-content">
+      <!-- dynamic content will come here -->
+    </div>
+  </div>
+</div>
+
+<style>
+    .global-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.global-popup[hidden] {
+  display: none;
+}
+
+.global-popup__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+}
+
+.global-popup__content {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  animation: popupFade .25s ease;
+}
+
+@keyframes popupFade {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+</style>
+
+<script>
+    document.addEventListener("click", function(e){
+
+  // Open popup
+  if(e.target.matches("[data-open-popup]")){
+    const popup = document.getElementById("global-popup");
+    popup.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  // Close popup
+  if(e.target.matches("[data-close]")){
+    closePopup();
+  }
+
+});
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){
+    closePopup();
+  }
+});
+
+function closePopup(){
+  const popup = document.getElementById("global-popup");
+  popup.hidden = true;
+  document.body.style.overflow = "";
+}
+
+</script>

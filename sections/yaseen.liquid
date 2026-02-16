@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+<div class="page-width">
+<div class="card_container">
+  {% for product_data in collections[section.settings.collection_idd].products %}
+    <div class="slide">
+      {% render 'card-product',
+        card_product: product_data,
+        media_aspect_ratio: section.settings.image_ratio,
+        image_shape: section.settings.image_shape,
+        show_secondary_image: section.settings.show_secondary_image,
+        show_vendor: section.settings.show_vendor,
+        show_rating: section.settings.show_rating,
+        lazy_load: lazy_load,
+        skip_styles: skip_card_product_styles,
+        quick_add: section.settings.quick_add,
+        section_id: section.id
+      %}
+    </div>
+  {% endfor %}
+</div>
+</div>
+ 
+<style>
+ 
+ 
+   .card_container{
+      width:100%;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }  
+   
+    .slick-next ,.slick-prev{
+    right: 10px !important;
+    height: 20px;
+    width: 20px;
+    background-color:black;
+    border:2px solid black;
+    border-radius:50%;
+    font-size:30px;
+    }
+ 
+    .slick-prev {
+    left: 10px !important;
+    height: 20px;
+    width: 20px;
+    background-color:black;
+    border:2px solid black;
+    border-radius:50%;
+    }
+ 
+</style>
+ 
+<script>
+  function initCardSlider() {
+    if ($('.card_container').hasClass('slick-initialized')) return;
+ 
+    $('.card_container').slick({
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      arrows: true,
+      dots: false,
+      infinite: false,
+      autoplay: false,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: { slidesToShow: 3 }
+        },
+        {
+          breakpoint: 768,
+          settings: { slidesToShow: 2 }
+        },
+        {
+          breakpoint: 480,
+          settings: { slidesToShow: 1 }
+        }
+      ]
+    });
+  }
+ 
+  document.addEventListener('DOMContentLoaded', initCardSlider);
+  document.addEventListener('shopify:section:load', initCardSlider);
+</script>
+ 
+ 
+ 
+{% schema %}
+{
+  "name": "cst-section",
+  "class": "section",
+  "settings": [
+ 
+    {
+      "type": "collection",
+      "id": "collection_idd",
+      "label": "Add collection"
+    },
+    {
+      "type": "select",
+      "id": "quick_add",
+      "default": "none",
+      "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_1"
+        },
+        {
+          "value": "standard",
+          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_2"
+        },
+        {
+          "value": "bulk",
+          "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
+        }
+      ]
+    },
+  ],
+  "presets": [
+    {
+     "name": "Custom card"
+    }
+   ]
+}
+{% endschema %}

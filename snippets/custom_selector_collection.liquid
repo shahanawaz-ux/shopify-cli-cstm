@@ -1,0 +1,65 @@
+
+{% if product.has_only_default_variant == false %}
+            <div class="product-variant-buttons {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}">
+              {% for variant in product.variants %}
+                <button
+                  class="product-variant {% if forloop.first %}active {% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-price="{{ variant.price | money }}"
+                  data-compare-price="{{ variant.compare_at_price | money }}"
+ 
+                  {% if variant.available == false %} disabled{% endif %}
+                >
+                  {{ variant.title }}
+                </button>
+              {% endfor %}
+            </div>
+  {% endif %}
+ 
+<style>
+  .product-variant-buttons {
+    position: relative;
+    z-index: 999;
+   }
+  button.product-variant.active {
+    background-color: #000;
+    color: #fff;
+  }
+  .product-variant {
+     cursor: pointer;
+   }
+ 
+</style>
+
+<script>
+  document.addEventListener("click", function (e) {
+ 
+    const variantBtn = e.target.closest(".product-variant");
+    if (!variantBtn) return;
+    
+    //  disabled variant ignore
+    if (variantBtn.hasAttribute("disabled")) return;
+    
+    //  nearest card
+    const card = variantBtn.closest(".card__content") || variantBtn.closest(".card");
+    if (!card) return;
+    
+    //  active class (only inside this card)
+    card.querySelectorAll(".product-variant").forEach(btn => {
+      btn.classList.remove("active");
+    });
+    variantBtn.classList.add("active");
+    
+    //  selected variant id
+    const selectedVariantId = variantBtn.dataset.variantId;
+    
+    //  hidden input inside same card form
+    const variantInput = card.querySelector(".product-variant-id");
+    
+    if (variantInput) {
+      variantInput.value = selectedVariantId;
+    }
+    
+  });
+ 
+</script>
