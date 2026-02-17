@@ -1,0 +1,123 @@
+{% comment %}
+  Text With Image Custom Section
+{% endcomment %}
+
+<section class="text-image-section">
+  <div class="page-width">
+    <div class="text-image-wrapper {% if section.settings.layout == 'right' %}reverse{% endif %}">
+      <div class="text-image-content">
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.subtext != blank %}
+          <div class="text-image-description">
+            {{ section.settings.subtext }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <a href="{{ section.settings.button_link }}" class="button">
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="text-image-media">
+        {% if section.settings.image != blank %}
+          <img 
+            src="{{ section.settings.image | image_url: width: 800 }}" 
+            alt="{{ section.settings.image.alt | escape }}" 
+            loading="lazy"
+            width="100%"
+            height="auto">
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.text-image-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.text-image-wrapper.reverse {
+  flex-direction: row-reverse;
+}
+
+.text-image-content,
+.text-image-media {
+  flex: 1;
+}
+
+.text-image-content h2 {
+  margin-bottom: 15px;
+}
+
+.text-image-description {
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .text-image-wrapper {
+    flex-direction: column;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Text With Image Custom",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image Position",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Image Left" },
+        { "value": "right", "label": "Image Right" }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your Heading Here"
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Text",
+      "default": "<p>Add your description here.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cstm Text With Image"
+    }
+  ]
+}
+{% endschema %}
